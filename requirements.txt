@@ -1,0 +1,15 @@
+django>=4.2,<5.0
+djangorestframework
+djangorestframework-simplejwt
+django-cors-headers
+django-filter
+pandas
+Pillow
+scikit-learn
+numpy<2.0.0
+scikit-surprise
+gunicorn
+whitenoise
+python-dotenv
+dj-database-url
+psycopg2-binary
