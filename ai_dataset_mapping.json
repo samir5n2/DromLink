@@ -1,0 +1,66 @@
+{
+  "project_name": "DormLink",
+  "version": "1.0.0",
+  "description": "Semantic data mapping for AI integration and dataset generation.",
+  "entities": {
+    "User": {
+      "description": "Base user account for authentication and role management.",
+      "fields": {
+        "user_type": "Role identifier: student, landlord, or admin.",
+        "account_status": "Status of the account: approved, pending, or rejected."
+      },
+      "relationships": {
+        "student_profile": "One-to-One with Student model.",
+        "landlord_profile": "One-to-One with Landlord model."
+      }
+    },
+    "Dorm": {
+      "description": "Property listing for rent.",
+      "fields": {
+        "category": "Type of housing: room, apartment, or studio.",
+        "gender_type": "Intended residents: male, female, or mixed.",
+        "price": "Monthly rental cost in local currency.",
+        "amenities": "List of features like Wifi, AC, Electricity included, etc."
+      },
+      "relationships": {
+        "owner": "Belongs to a Landlord.",
+        "images": "One-to-Many with DormImage."
+      }
+    },
+    "BookingRequest": {
+      "description": "Transaction record for a student booking a property.",
+      "fields": {
+        "status": "Current state: pending, approved, or rejected.",
+        "created_at": "Timestamp of the request."
+      },
+      "relationships": {
+        "student": "The requester.",
+        "dorm": "The targeted property."
+      }
+    },
+    "Message": {
+      "description": "Chat message between two users.",
+      "fields": {
+        "content": "The text body of the message.",
+        "is_chat_closed": "Boolean flag indicating if the thread is archived.",
+        "contact_message": "Optional link to a guest inquiry ID."
+      }
+    }
+  },
+  "query_logic": [
+    {
+      "intent": "search_housing",
+      "target": "Dorm",
+      "logic": "Filter by price, category, and gender_type."
+    },
+    {
+      "intent": "check_booking_status",
+      "target": "BookingRequest",
+      "logic": "Filter by student_id and return latest status."
+    }
+  ],
+  "security_policy": {
+    "private_fields": ["password", "token"],
+    "access_control": "Users can only access records where user_id matches or public listings."
+  }
+}
