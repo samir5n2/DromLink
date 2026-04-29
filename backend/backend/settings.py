@@ -122,6 +122,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8080",
     "https://*.vercel.app", # For frontend on Vercel
     "https://*.render.com", # For backend on Render
+    "https://dromlink-production.up.railway.app", # For Railway production
 ]
 
 # DRF Settings
