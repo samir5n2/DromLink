@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { fetchApi } from "@/lib/api";
-
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { 
@@ -17,6 +16,9 @@ import {
   DialogFooter,
   DialogTrigger
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
@@ -34,6 +36,8 @@ const StudentProfile = () => {
   const [error, setError] = useState<string | null>(null);
   const [reviews, setReviews] = useState<any[]>([]);
   const [loadingReviews, setLoadingReviews] = useState(true);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [editFormData, setEditFormData] = useState<any>({});
 
   useEffect(() => {
     fetchApi('/me/')
@@ -238,39 +242,94 @@ const StudentProfile = () => {
               )}
             </div>
 
-            {/* AI Preferences */}
+            {/* Preferences */}
             <div className="mt-8 mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-bold flex items-center gap-2">✨ {i18n.language === 'ar' ? "تفضيلات الذكاء الاصطناعي" : "AI Preferences"}</h2>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={async () => {
-                  const newBudgetStr = prompt(i18n.language === 'ar' ? "أدخل ميزانيتك القصوى (جنيه/شهر):" : "Enter max budget (EGP/month):", profile.budget_max_egp?.toString() || "10000");
-                  if (newBudgetStr === null) return;
-                  const newDistanceStr = prompt(i18n.language === 'ar' ? "أدخل المسافة القصوى للجامعة (كم):" : "Enter max distance to university (km):", profile.preferred_distance_km?.toString() || "5");
-                  if (newDistanceStr === null) return;
-                  
-                  const newBudget = parseInt(newBudgetStr);
-                  const newDistance = parseFloat(newDistanceStr);
-                  
-                  if (!isNaN(newBudget) && !isNaN(newDistance)) {
-                    try {
-                      await fetchApi(`/students/${profile.student_id}/`, {
-                        method: 'PATCH',
-                        body: JSON.stringify({ budget_max_egp: newBudget, preferred_distance_km: newDistance })
-                      });
-                      setProfile({ ...profile, budget_max_egp: newBudget, preferred_distance_km: newDistance });
-                      toast.success(i18n.language === 'ar' ? "تم تحديث التفضيلات بنجاح" : "Preferences updated successfully!");
-                    } catch (err) {
-                      toast.error(i18n.language === 'ar' ? "فشل التحديث" : "Update failed");
-                    }
-                  } else {
-                    toast.error(i18n.language === 'ar' ? "قيم غير صالحة" : "Invalid values");
-                  }
-                }}
-              >
-                {i18n.language === 'ar' ? "تعديل" : "Edit"}
-              </Button>
+              <h2 className="text-xl font-bold flex items-center gap-2">✨ {i18n.language === 'ar' ? "التفضيلات" : "Preferences"}</h2>
+              
+              <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => setEditFormData({...profile})}
+                  >
+                    {i18n.language === 'ar' ? "تعديل" : "Edit"}
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>{i18n.language === 'ar' ? "تعديل التفضيلات" : "Edit Preferences"}</DialogTitle>
+                  </DialogHeader>
+                  <div className="grid gap-6 py-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>{i18n.language === 'ar' ? "الميزانية القصوى" : "Max Budget"}</Label>
+                        <Input 
+                          type="number" 
+                          step="100"
+                          value={editFormData.budget_max_egp || ""} 
+                          onChange={(e) => setEditFormData({...editFormData, budget_max_egp: parseInt(e.target.value)})}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>{i18n.language === 'ar' ? "أقصى مسافة (كم)" : "Max Distance (KM)"}</Label>
+                        <Input 
+                          type="number" 
+                          step="0.5"
+                          value={editFormData.preferred_distance_km || ""} 
+                          onChange={(e) => setEditFormData({...editFormData, preferred_distance_km: parseFloat(e.target.value)})}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <Label className="text-base">{i18n.language === 'ar' ? "الاحتياجات المطلوبة" : "Required Amenities"}</Label>
+                      <div className="grid grid-cols-2 gap-4">
+                        {[
+                          { key: 'needs_wifi', label: t('property.wifi') },
+                          { key: 'needs_kitchen', label: t('property.kitchen') },
+                          { key: 'needs_laundry', label: t('property.laundry') },
+                          { key: 'needs_ac', label: t('property.ac') },
+                          { key: 'needs_parking', label: t('property.parking') },
+                          { key: 'needs_furnished', label: t('property.furnished') },
+                          { key: 'needs_smart_tv', label: t('property.smartTv') },
+                          { key: 'needs_pet_friendly', label: t('property.petFriendly') },
+                          { key: 'needs_scenic_view', label: t('property.scenicView') },
+                        ].map((pref) => (
+                          <div key={pref.key} className="flex items-center space-x-2 space-x-reverse">
+                            <Checkbox 
+                              id={pref.key} 
+                              checked={editFormData[pref.key]} 
+                              onCheckedChange={(checked) => setEditFormData({...editFormData, [pref.key]: !!checked})}
+                            />
+                            <Label htmlFor={pref.key} className="cursor-pointer">{pref.label}</Label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+                      {i18n.language === 'ar' ? "إلغاء" : "Cancel"}
+                    </Button>
+                    <Button onClick={async () => {
+                      try {
+                        await fetchApi(`/students/${profile.student_id}/`, {
+                          method: 'PATCH',
+                          body: JSON.stringify(editFormData)
+                        });
+                        setProfile(editFormData);
+                        setIsEditDialogOpen(false);
+                        toast.success(i18n.language === 'ar' ? "تم تحديث التفضيلات بنجاح" : "Preferences updated successfully!");
+                      } catch (err) {
+                        toast.error(i18n.language === 'ar' ? "فشل التحديث" : "Update failed");
+                      }
+                    }}>
+                      {i18n.language === 'ar' ? "حفظ التغييرات" : "Save Changes"}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="rounded-xl border bg-card p-4 flex flex-col justify-center">

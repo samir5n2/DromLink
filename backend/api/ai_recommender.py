@@ -107,7 +107,7 @@ class DormRecommender:
         ]], dtype=float)
         
         knn = NearestNeighbors(n_neighbors=len(filtered))
-        knn.fit(features)
+        knn.fit(features.values)
         
         distances, indices = knn.kneighbors(student_vector)
         
