@@ -120,9 +120,16 @@ CORS_ALLOW_ALL_ORIGINS = True # Set to False and specify CORS_ALLOWED_ORIGINS in
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8080",
     "http://127.0.0.1:8080",
-    "https://*.vercel.app", # For frontend on Vercel
-    "https://*.render.com", # For backend on Render
-    "https://dromlink-production.up.railway.app", # For Railway production
+    "https://*.vercel.app",
+    "https://*.render.com",
+    "https://dromlink-production.up.railway.app",
+    "https://dromlink.netlify.app", # Netlify Frontend
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "https://dromlink.netlify.app", # Netlify Frontend
 ]
 
 # DRF Settings
