@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button";
 import { GraduationCap, ShieldCheck, Search, HeadphonesIcon, Target, Settings, Zap, Handshake, Lock, BadgeCheck, FileText } from "lucide-react";
 
 const team = [
-  { name: "Areej Mahmoud", role: "CEO & Founder", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Areej" },
-  { name: "Samir Nagy", role: "Tech Lead", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Samir" },
-  { name: "Mennatallah Magdy", role: "Head of Design", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mennatallah" },
-  { name: "Keroles Adel", role: "Full Stack Developer", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Keroles" },
-  { name: "Micheal Maged", role: "Operations Manager", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Micheal" },
-  { name: "Abdelrahman adel", role: "Marketing Specialist", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Abdelrahman" },
-  { name: "Zeyad Yasser", role: "Customer Success", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Zeyad" },
-  { name: "Mohammed refaat", role: "Quality Assurance", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mohammed" },
+  { name: "Areej Mahmoud", role: "Backend Engineer", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Areej" },
+  { name: "Samir Nagy", role: "Backend Engineer", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Samir" },
+  { name: "Mennatallah Magdy", role: "AI Engineer", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mennatallah" },
+  { name: "Keroles Adel", role: "Frontend Engineer", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Keroles" },
+  { name: "Micheal Maged", role: "AI Engineer", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Micheal" },
+  { name: "Abdelrahman adel", role: "Frontend Engineer", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Abdelrahman" },
+  { name: "Zeyad Yasser", role: "Backend Engineer", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Zeyad" },
+  { name: "Mohammed refaat", role: "Frontend Engineer", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mohammed" },
 ];
 
 const About = () => {
