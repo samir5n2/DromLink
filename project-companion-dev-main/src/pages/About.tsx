@@ -50,12 +50,20 @@ const About = () => {
         <div className="flex flex-wrap justify-center gap-6">
           {team.map((member) => (
             <div key={member.name} className="flex flex-col items-center p-6 rounded-2xl border bg-card hover:shadow-lg hover:-translate-y-1 transition-all duration-300 min-w-[180px]">
-              <div className="h-24 w-24 rounded-full bg-secondary border-2 border-primary/20 flex items-center justify-center text-2xl font-bold text-primary mb-3 overflow-hidden">
+              <div className="h-24 w-24 rounded-full bg-secondary border-2 border-primary/20 flex items-center justify-center text-2xl font-bold text-primary mb-3 overflow-hidden relative">
                 {member.image ? (
-                  <img src={member.image} alt={member.name} className="h-full w-full object-cover" />
-                ) : (
-                  member.name.split(" ").map(n => n[0]).join("")
-                )}
+                  <img 
+                    src={member.image} 
+                    alt={member.name} 
+                    className="h-full w-full object-cover relative z-10" 
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
+                  />
+                ) : null}
+                <span className="absolute inset-0 flex items-center justify-center z-0">
+                  {member.name.split(" ").map(n => n[0]).join("")}
+                </span>
               </div>
               <p className="font-semibold text-sm">{member.name}</p>
               <p className="text-xs text-muted-foreground">{member.role}</p>
