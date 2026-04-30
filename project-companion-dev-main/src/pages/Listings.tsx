@@ -214,7 +214,10 @@ const Listings = () => {
         <div className="sticky top-16 z-40 bg-background/80 backdrop-blur-md border-b py-4 shadow-sm">
           <div className="container flex items-center gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Search 
+                className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground cursor-pointer hover:text-primary transition-colors z-10" 
+                onClick={handleSearch}
+              />
               <Input
                 placeholder={t('listings.searchPlaceholder')}
                 value={searchTerm}

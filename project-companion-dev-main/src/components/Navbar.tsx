@@ -312,7 +312,16 @@ const Navbar = () => {
       {mobileOpen && (
         <div className="md:hidden border-t bg-background p-4 space-y-3">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search 
+              className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground cursor-pointer hover:text-primary transition-colors z-10" 
+              onClick={() => {
+                if (searchQuery.trim()) {
+                  navigate(`/listings?search=${encodeURIComponent(searchQuery)}`);
+                  setSearchQuery("");
+                  setMobileOpen(false);
+                }
+              }}
+            />
             <input
               type="text"
               placeholder={t("nav.searchPlaceholder")}
