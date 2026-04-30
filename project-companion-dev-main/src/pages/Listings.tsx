@@ -50,6 +50,7 @@ const Listings = () => {
   const [bedType, setBedType] = useState("any");
   const [amenities, setAmenities] = useState<string[]>([]);
   const [gender, setGender] = useState("any");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const { data: properties = [], isLoading } = useQuery({
     queryKey: ['dorms', locationParam],
     queryFn: async () => {
@@ -172,6 +173,7 @@ const Listings = () => {
 
   const handleSearch = () => {
     setSearched(true);
+    setIsFilterOpen(false);
   };
 
   const sortParam = searchParams.get("sort");
@@ -226,7 +228,7 @@ const Listings = () => {
                 className="pl-12 h-12 rounded-full border-2 border-primary/10 focus-visible:border-primary transition-all bg-card/50"
               />
             </div>
-            <Sheet>
+            <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
               <SheetTrigger asChild>
                 <Button variant="outline" className="rounded-full gap-2 h-12 px-6 border-2 border-primary/10 hover:bg-primary/5 hover:border-primary/30 transition-all">
                   <SlidersHorizontal className="h-5 w-5" />
