@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://dromlink-production.up.railway.app/api';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://dromlink-production.up.railway.app/api';
 
 export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
   const token = localStorage.getItem('access_token');
