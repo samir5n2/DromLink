@@ -13,7 +13,7 @@ import {
   Car, Armchair, Tv, Dog, Mountain
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { fetchApi } from "@/lib/api";
+import { fetchApi, MEDIA_BASE_URL } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -158,7 +158,7 @@ const PropertyDetails = () => {
   }
 
   const images = property?.images && property.images.length > 0 
-    ? property.images.map((img: any) => img?.image ? (img.image.startsWith('http') ? img.image.replace(/127\.0\.0\.1:8000|localhost:8000/, 'localhost:8000') : `http://localhost:8000${img.image}`) : "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&h=800&fit=crop")
+    ? property.images.map((img: any) => img?.image ? (img.image.startsWith('http') ? img.image : `${MEDIA_BASE_URL}${img.image}`) : "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&h=800&fit=crop")
     : ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&h=800&fit=crop"];
 
   const avgRating = property.average_rating || "0.0";

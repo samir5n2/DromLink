@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchApi } from "@/lib/api";
+import { fetchApi, MEDIA_BASE_URL } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
 
 const featuredProperty = {
@@ -92,7 +92,7 @@ const Listings = () => {
           distance_km: dorm.distance_km,
           has_approved_booking: dorm.has_approved_booking,
           image: dorm.images?.[0]?.image 
-            ? (dorm.images[0].image.startsWith('http') ? dorm.images[0].image.replace(/127\.0\.0\.1:8000|localhost:8000/, 'localhost:8000') : `http://localhost:8000${dorm.images[0].image}`)
+            ? (dorm.images[0].image.startsWith('http') ? dorm.images[0].image : `${MEDIA_BASE_URL}${dorm.images[0].image}`)
             : getFallbackImage(index)
         };
       });

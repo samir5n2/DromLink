@@ -4,7 +4,7 @@ import { Check, X, Building2, MapPin, Search, Clock } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { fetchApi } from "@/lib/api";
+import { fetchApi, MEDIA_BASE_URL } from "@/lib/api";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -34,10 +34,9 @@ const PropertyVerification = () => {
   const getFullImageUrl = (url: string) => {
     if (!url) return "";
     if (url.startsWith('http')) {
-      // If it's a full URL, ensure it uses localhost:8000 for local dev consistency
-      return url.replace(/127\.0\.0\.1:8000|localhost:8000/, 'localhost:8000');
+      return url;
     }
-    return `http://localhost:8000${url.startsWith('/') ? '' : '/'}${url}`;
+    return `${MEDIA_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
   };
 
   const updateStatusMutation = useMutation({

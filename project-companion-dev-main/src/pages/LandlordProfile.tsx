@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { fetchApi } from "@/lib/api";
+import { fetchApi, MEDIA_BASE_URL } from "@/lib/api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 
@@ -398,7 +398,7 @@ const LandlordProfile = ({ defaultTab }: { defaultTab?: string }) => {
             <div key={prop.dorm_id} className="rounded-xl border bg-card overflow-hidden hover:shadow-lg transition-shadow">
               <div className="relative h-44 bg-muted">
                 {prop.images?.[0] ? (
-                  <img src={prop.images[0].image?.startsWith('http') ? prop.images[0].image.replace(/127\.0\.0\.1:8000|localhost:8000/, 'localhost:8000') : `http://localhost:8000${prop.images[0].image}`} alt={prop.name} className="w-full h-full object-cover" />
+                  <img src={prop.images[0].image?.startsWith('http') ? prop.images[0].image : `${MEDIA_BASE_URL}${prop.images[0].image}`} alt={prop.name} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground">No Image</div>
                 )}
@@ -603,7 +603,7 @@ const LandlordProfile = ({ defaultTab }: { defaultTab?: string }) => {
                   {existingImages.map((img: any) => (
                     <div key={img.id} className="relative group aspect-square rounded-lg overflow-hidden border">
                       <img 
-                        src={img.image?.startsWith('http') ? img.image.replace(/127\.0\.0\.1:8000|localhost:8000/, 'localhost:8000') : `http://localhost:8000${img.image}`} 
+                        src={img.image?.startsWith('http') ? img.image : `${MEDIA_BASE_URL}${img.image}`} 
                         alt="Property" 
                         className="w-full h-full object-cover" 
                       />
