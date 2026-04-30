@@ -5,10 +5,14 @@ import { Button } from "@/components/ui/button";
 import { GraduationCap, ShieldCheck, Search, HeadphonesIcon, Target, Settings, Zap, Handshake, Lock, BadgeCheck, FileText } from "lucide-react";
 
 const team = [
-  { name: "Jane Doe", role: "CEO & Founder" },
-  { name: "John Smith", role: "Chief Technology Officer" },
-  { name: "Emily White", role: "Head of Student Relations" },
-  { name: "David Green", role: "Property Partner Manager" },
+  { name: "Areej Mahmoud", role: "CEO & Founder", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop" },
+  { name: "Samir Nagy", role: "Tech Lead", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop" },
+  { name: "Mennatallah Magdy", role: "Head of Design", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop" },
+  { name: "Keroles Adel", role: "Full Stack Developer", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop" },
+  { name: "Micheal Maged", role: "Operations Manager", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop" },
+  { name: "Abdelrahman adel", role: "Marketing Specialist", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop" },
+  { name: "Zeyad Yasser", role: "Customer Success", image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop" },
+  { name: "Mohammed refaat", role: "Quality Assurance", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop" },
 ];
 
 const About = () => {
@@ -46,8 +50,12 @@ const About = () => {
         <div className="flex flex-wrap justify-center gap-6">
           {team.map((member) => (
             <div key={member.name} className="flex flex-col items-center p-6 rounded-2xl border bg-card hover:shadow-lg hover:-translate-y-1 transition-all duration-300 min-w-[180px]">
-              <div className="h-24 w-24 rounded-full bg-secondary border-2 border-primary/20 flex items-center justify-center text-2xl font-bold text-primary mb-3">
-                {member.name.split(" ").map(n => n[0]).join("")}
+              <div className="h-24 w-24 rounded-full bg-secondary border-2 border-primary/20 flex items-center justify-center text-2xl font-bold text-primary mb-3 overflow-hidden">
+                {member.image ? (
+                  <img src={member.image} alt={member.name} className="h-full w-full object-cover" />
+                ) : (
+                  member.name.split(" ").map(n => n[0]).join("")
+                )}
               </div>
               <p className="font-semibold text-sm">{member.name}</p>
               <p className="text-xs text-muted-foreground">{member.role}</p>
