@@ -18,7 +18,8 @@ const GenerateReports = () => {
   const [exportFormat, setExportFormat] = useState("pdf");
 
   const handleDownload = () => {
-    const baseUrl = "http://127.0.0.1:8000/api/reports/export/";
+import { API_BASE_URL } from "@/lib/api";
+const baseUrl = `${API_BASE_URL}/reports/export/`;
     const url = `${baseUrl}?type=${reportType}&format=${exportFormat}`;
     
     // In a real production app, we might need to handle auth headers if the browser download doesn't support them

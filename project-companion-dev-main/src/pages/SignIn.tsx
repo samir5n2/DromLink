@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { fetchApi } from "@/lib/api";
+import { fetchApi, API_BASE_URL } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import authBg from "@/assets/auth-bg.jpg";
 
@@ -23,8 +23,8 @@ const SignIn = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      // Get token from backend
-      const response = await fetch('http://127.0.0.1:8000/api/token/', {
+      const response = await fetch(`${API_BASE_URL}/token/`, {
+
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })

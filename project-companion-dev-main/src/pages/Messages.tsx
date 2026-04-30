@@ -492,7 +492,7 @@ const Messages = () => {
                             {msg.attachment && (
                               <div className="mt-2 pt-2 border-t border-white/20">
                                 <a 
-                                  href={msg.attachment.startsWith('http') ? msg.attachment : `http://127.0.0.1:8000${msg.attachment}`} 
+                                  href={msg.attachment.startsWith('http') ? msg.attachment : `${API_BASE_URL.replace('/api', '')}${msg.attachment}`} 
                                   target="_blank" 
                                   rel="noopener noreferrer"
                                   className="flex items-center gap-2 text-xs hover:underline"

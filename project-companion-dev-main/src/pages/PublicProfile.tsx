@@ -139,7 +139,7 @@ const PublicProfile = () => {
           ) : activeProperties.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {activeProperties.map((prop: any) => {
-                const image = prop.images?.[0]?.image ? (prop.images[0].image.startsWith('http') ? prop.images[0].image : `http://127.0.0.1:8000${prop.images[0].image}`) : "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=260&fit=crop";
+                const image = prop.images?.[0]?.image ? (prop.images[0].image.startsWith('http') ? prop.images[0].image : `${API_BASE_URL.replace('/api', '')}${prop.images[0].image}`) : "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=260&fit=crop";
                 return (
                   <div key={prop.dorm_id} className="rounded-xl border bg-card overflow-hidden group hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate(`/property/${prop.dorm_id}`)}>
                     <div className="relative h-48">
