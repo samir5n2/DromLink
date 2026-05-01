@@ -11,7 +11,8 @@ from .models import Student, Dorm, DormImage, Rating, Landlord, Location, Bookin
 from .serializers import StudentSerializer, DormSerializer, DormImageSerializer, RatingSerializer, LandlordSerializer, RegisterSerializer, LocationSerializer, BookingRequestSerializer, MessageSerializer, NotificationSerializer, SavedDormSerializer, StudentRatingSerializer, SiteRatingSerializer, LandlordRatingSerializer, ContactMessageSerializer
 from django.db.models import Avg
 from rest_framework_simplejwt.tokens import RefreshToken
-from .ai_recommender import recommender_instance
+from .ai_recommender import recommender_instance as old_recommender
+from .dormlinkx222 import recommender_instance
 import re
 
 def normalize_arabic(text):
@@ -798,6 +799,25 @@ class UpdateStudentProfileView(APIView):
     def patch(self, request):
         if not hasattr(request.user, 'student'):
             return Response({"error": "Only students can update their preferences"}, status=status.HTTP_403_FORBIDDEN)
+
+class SyncExportView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        from django.core import serializers
+        from django.apps import apps
+        from django.http import HttpResponse
+        
+        # Get all models from the 'api' app and the 'auth' app
+        api_models = apps.get_app_config('api').get_models()
+        auth_models = apps.get_app_config('auth').get_models()
+        
+        all_objects = []
+        for model in list(auth_models) + list(api_models):
+            all_objects.extend(model.objects.all())
+            
+        data = serializers.serialize("json", all_objects)
+        return HttpResponse(data, content_type="application/json")
         
         student = request.user.student
         

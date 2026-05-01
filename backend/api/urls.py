@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import StudentViewSet, DormViewSet, RatingViewSet, LandlordViewSet, RegisterView, MeView, LocationViewSet, AdminUsersView, DormImageViewSet, BookingRequestViewSet, MessageViewSet, NotificationViewSet, AdminDormVerificationView, SavedDormViewSet, StudentRatingViewSet, SiteRatingViewSet, LandlordRatingViewSet, SiteStatsView, ContactMessageViewSet, ReportViewSet, UpdateStudentProfileView, RecommendationView
+from .views import StudentViewSet, DormViewSet, RatingViewSet, LandlordViewSet, RegisterView, MeView, LocationViewSet, AdminUsersView, DormImageViewSet, BookingRequestViewSet, MessageViewSet, NotificationViewSet, AdminDormVerificationView, SavedDormViewSet, StudentRatingViewSet, SiteRatingViewSet, LandlordRatingViewSet, SiteStatsView, ContactMessageViewSet, ReportViewSet, UpdateStudentProfileView, RecommendationView, SyncExportView
 
 router = DefaultRouter()
 router.register(r'landlords', LandlordViewSet)
@@ -27,5 +27,6 @@ urlpatterns = [
     path('admin/dorms/', AdminDormVerificationView.as_view(), name='admin_dorms'),
     path('stats/', SiteStatsView.as_view(), name='site_stats'),
     path('recommendations/', RecommendationView.as_view(), name='recommendations'),
+    path('sync-export/', SyncExportView.as_view(), name='sync_export'),
     path('', include(router.urls)),
 ]

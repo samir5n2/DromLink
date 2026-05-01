@@ -50,6 +50,7 @@ const Listings = () => {
   const [bedType, setBedType] = useState("any");
   const [amenities, setAmenities] = useState<string[]>([]);
   const [gender, setGender] = useState("any");
+  const [maxDistance, setMaxDistance] = useState<string>("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const { data: properties = [], isLoading } = useQuery({
     queryKey: ['dorms', locationParam],
@@ -179,9 +180,10 @@ const Listings = () => {
           !p.location.toLowerCase().includes(areaFilter.toLowerCase()) && 
           !p.address.toLowerCase().includes(areaFilter.toLowerCase())
       ) return false;
+      if (maxDistance && p.distance_km > Number(maxDistance)) return false;
       return true;
     });
-  }, [properties, searchTerm, minPrice, maxPrice, bedType, gender, amenities, areaFilter]);
+  }, [properties, searchTerm, minPrice, maxPrice, bedType, gender, amenities, areaFilter, maxDistance]);
 
   const handleSearch = () => {
     setSearched(true);
@@ -209,6 +211,17 @@ const Listings = () => {
   }, [locationParam]);
 
   const locationLabel = areaFilter || (locationName ? locationName : "Egypt");
+
+  // Load initial preferences if logged in
+  useEffect(() => {
+    if (isLoggedIn && userType === 'student') {
+      fetchApi('/me/').then(data => {
+        if (data && data.preferred_distance_km) {
+          setMaxDistance(data.preferred_distance_km.toString());
+        }
+      }).catch(() => {});
+    }
+  }, [isLoggedIn, userType]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -270,6 +283,22 @@ const Listings = () => {
                           value={maxPrice}
                           onChange={(e) => setMaxPrice(e.target.value)}
                         />
+                      </div>
+                    </div>
+                    
+                    {/* Distance Filter */}
+                    <div className="space-y-3">
+                      <Label className="text-base font-bold">{isAr ? "أقصى مسافة للجامعة (كم)" : "Max Distance to University (KM)"}</Label>
+                      <div className="flex items-center gap-4">
+                        <Input
+                          type="number"
+                          step="0.5"
+                          placeholder={isAr ? "مثال: 2.5" : "e.g. 2.5"}
+                          value={maxDistance}
+                          onChange={(e) => setMaxDistance(e.target.value)}
+                          className="h-11"
+                        />
+                        <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">{isAr ? "كم" : "KM"}</span>
                       </div>
                     </div>
 

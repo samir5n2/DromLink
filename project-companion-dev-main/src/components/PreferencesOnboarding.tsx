@@ -46,6 +46,7 @@ export const PreferencesOnboarding = () => {
     needs_scenic_view: false,
   });
   const [budget, setBudget] = useState(1500);
+  const [distance, setDistance] = useState(5.0);
 
   useEffect(() => {
     const isDismissed = localStorage.getItem('preferences_onboarding_dismissed');
@@ -74,6 +75,7 @@ export const PreferencesOnboarding = () => {
         body: JSON.stringify({
           ...preferences,
           budget_max_egp: budget,
+          preferred_distance_km: distance,
           preferences_set: true
         })
       });
@@ -155,24 +157,27 @@ export const PreferencesOnboarding = () => {
             ))}
           </div>
 
-          <div className="space-y-3 pt-2">
+            </div>
+          </div>
+
+          <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <Label className="text-sm font-semibold">{i18n.language === 'ar' ? "الميزانية الشهرية القصوى (ج.م)" : "Max Monthly Budget (EGP)"}</Label>
-              <span className="text-primary font-bold">{budget}</span>
+              <Label className="text-sm font-semibold">{i18n.language === 'ar' ? "أقصى مسافة للجامعة (كم)" : "Max Distance to University (KM)"}</Label>
+              <span className="text-primary font-bold">{distance} {i18n.language === 'ar' ? "كم" : "KM"}</span>
             </div>
             <Input 
               type="range" 
-              min="900" 
-              max="2500" 
-              step="100" 
-              value={budget} 
-              onChange={(e) => setBudget(parseInt(e.target.value))}
+              min="0.5" 
+              max="20" 
+              step="0.5" 
+              value={distance} 
+              onChange={(e) => setDistance(parseFloat(e.target.value))}
               className="h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
             />
             <div className="flex justify-between text-[10px] text-muted-foreground">
-              <span>900</span>
-              <span>1700</span>
-              <span>2500</span>
+              <span>0.5</span>
+              <span>10</span>
+              <span>20</span>
             </div>
           </div>
 
