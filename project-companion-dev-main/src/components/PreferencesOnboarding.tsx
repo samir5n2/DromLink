@@ -157,6 +157,24 @@ export const PreferencesOnboarding = () => {
             ))}
           </div>
 
+          <div className="space-y-3 pt-2">
+            <div className="flex justify-between items-center">
+              <Label className="text-sm font-semibold">{i18n.language === 'ar' ? "الميزانية الشهرية القصوى (ج.م)" : "Max Monthly Budget (EGP)"}</Label>
+              <span className="text-primary font-bold">{budget}</span>
+            </div>
+            <Input 
+              type="range" 
+              min="900" 
+              max="2500" 
+              step="100" 
+              value={budget} 
+              onChange={(e) => setBudget(parseInt(e.target.value))}
+              className="h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
+            />
+            <div className="flex justify-between text-[10px] text-muted-foreground">
+              <span>900</span>
+              <span>1700</span>
+              <span>2500</span>
             </div>
           </div>
 
