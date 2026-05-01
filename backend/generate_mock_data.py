@@ -85,7 +85,9 @@ def create_mock_data():
             gender=random.choice(['male', 'female']),
             account_status='approved',
             preferred_room_type=random.choice(['single', 'shared']),
+            budget_min_egp=random.randint(500, 1500),
             budget_max_egp=random.randint(1500, 5000),
+            needs_gym=random.choice([True, False]),
             preferences_set=True
         )
         students.append(student)
@@ -117,15 +119,26 @@ def create_mock_data():
             is_furnished=random.choice([True, False, True]),
             description=random.choice(descriptions),
             approval_status='approved',
-            gender_preference=random.choice(['male', 'female'])
+            gender_preference=random.choice(['male', 'female']),
+            gender_policy=random.choice(['male', 'female', 'mixed']),
+            is_available=True,
+            has_gym=random.choice([True, False])
         )
         
-        # Add a random image
-        img_id = random.randint(1, 1000)
-        DormImage.objects.create(
-            dorm=dorm,
-            image=f"https://picsum.photos/seed/{img_id}/800/600"
-        )
+        # Add a random local image
+        local_images = os.listdir(os.path.join('media', 'dorm_images'))
+        if local_images:
+            img_file = random.choice(local_images)
+            DormImage.objects.create(
+                dorm=dorm,
+                image=f"dorm_images/{img_file}"
+            )
+        else:
+            # Fallback if folder is empty (shouldn't happen based on my check)
+            DormImage.objects.create(
+                dorm=dorm,
+                image="dorm_images/default.jpg"
+            )
         dorms.append(dorm)
         
     print(f"Created {len(dorms)} dorms.")

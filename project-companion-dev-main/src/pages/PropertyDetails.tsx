@@ -158,7 +158,15 @@ const PropertyDetails = () => {
   }
 
   const images = property?.images && property.images.length > 0 
-    ? property.images.map((img: any) => img?.image ? (img.image.startsWith('http') ? img.image : `${MEDIA_BASE_URL}${img.image}`) : "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&h=800&fit=crop")
+    ? property.images.map((img: any) => {
+        const imagePath = img?.image;
+        if (!imagePath) return "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&h=800&fit=crop";
+        if (imagePath.startsWith('http')) return imagePath;
+        
+        const normalizedPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+        const mediaPrefix = normalizedPath.startsWith('/media/') ? '' : '/media';
+        return `${MEDIA_BASE_URL}${mediaPrefix}${normalizedPath}`;
+      })
     : ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&h=800&fit=crop"];
 
   const avgRating = property.average_rating || "0.0";

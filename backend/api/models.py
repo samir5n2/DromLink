@@ -57,8 +57,10 @@ class Student(models.Model):
     needs_scenic_view = models.BooleanField(default=False)
     id_card_image = models.ImageField(upload_to='student_ids/', null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
+    budget_min_egp = models.IntegerField(default=0)
     budget_max_egp = models.IntegerField(default=10000)
     preferred_distance_km = models.FloatField(default=5.0)
+    needs_gym = models.BooleanField(default=False)
     preferences_set = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
@@ -110,6 +112,10 @@ class Dorm(models.Model):
     description = models.TextField(null=True, blank=True)
     google_maps_link = models.URLField(max_length=500, null=True, blank=True)
     gender_preference = models.CharField(max_length=10, choices=[('male', 'Male'), ('female', 'Female')], default='male')
+    gender_policy = models.CharField(max_length=20, choices=[('male', 'Male'), ('female', 'Female'), ('mixed', 'Mixed')], default='mixed')
+    is_available = models.BooleanField(default=True)
+    has_gym = models.BooleanField(default=False)
+    is_reported = models.BooleanField(default=False)
     approval_status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('approved', 'Approved'), ('rejected', 'Rejected')], default='pending')
     rejection_reason = models.TextField(null=True, blank=True)
 

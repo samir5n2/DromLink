@@ -19,18 +19,21 @@ class DormRecommender:
         ratings = Rating.objects.all()
         
         self.dorms_df = pd.DataFrame(list(dorms.values(
-            'dorm_id', 'price_egp', 'distance_km', 'room_type', 'gender_preference',
-            'has_wifi', 'has_kitchen', 'has_laundry', 'has_ac', 'is_pet_friendly',
-            'capacity', 'current_occupants'
+            'dorm_id', 'price_egp', 'distance_km', 'room_type', 'gender_preference', 'gender_policy',
+            'has_wifi', 'has_kitchen', 'has_laundry', 'has_ac', 'has_gym', 'is_pet_friendly',
+            'capacity', 'current_occupants', 'is_available'
         )))
         
         # Filter available dorms
         if not self.dorms_df.empty:
-            self.dorms_df = self.dorms_df[self.dorms_df['current_occupants'] < self.dorms_df['capacity']]
+            self.dorms_df = self.dorms_df[
+                (self.dorms_df['current_occupants'] < self.dorms_df['capacity']) & 
+                (self.dorms_df['is_available'] == True)
+            ]
         
         self.students_df = pd.DataFrame(list(students.values(
-            'student_id', 'budget_max_egp', 'preferred_distance_km', 'preferred_room_type',
-            'gender', 'needs_wifi', 'needs_kitchen', 'needs_laundry', 'needs_ac', 'needs_pet_friendly'
+            'student_id', 'budget_min_egp', 'budget_max_egp', 'preferred_distance_km', 'preferred_room_type',
+            'gender', 'needs_wifi', 'needs_kitchen', 'needs_laundry', 'needs_ac', 'needs_gym', 'needs_pet_friendly'
         )))
         
         self.ratings_df = pd.DataFrame(list(ratings.values('student_id', 'dorm_id', 'final_rating')))
@@ -48,10 +51,10 @@ class DormRecommender:
         self.students_df['room_type_enc'] = self.le_room.transform(self.students_df['preferred_room_type'].astype(str))
         
         self.le_gender = LabelEncoder()
-        all_genders = pd.concat([self.dorms_df['gender_preference'], self.students_df['gender']]).astype(str)
+        all_genders = pd.concat([self.dorms_df['gender_policy'], self.students_df['gender']]).astype(str)
         self.le_gender.fit(all_genders)
         
-        self.dorms_df['gender_policy_enc'] = self.le_gender.transform(self.dorms_df['gender_preference'].astype(str))
+        self.dorms_df['gender_policy_enc'] = self.le_gender.transform(self.dorms_df['gender_policy'].astype(str))
         self.students_df['gender_enc'] = self.le_gender.transform(self.students_df['gender'].astype(str))
         
         self.scaler = StandardScaler()
@@ -81,9 +84,10 @@ class DormRecommender:
             
         # Filter dorms based on basic constraints
         filtered = self.dorms_df[
+            (self.dorms_df["price_egp"] >= student["budget_min_egp"]) &
             (self.dorms_df["price_egp"] <= student["budget_max_egp"]) &
             (self.dorms_df["distance_km"] <= student["preferred_distance_km"]) &
-            (self.dorms_df["gender_preference"] == student["gender"])
+            ((self.dorms_df["gender_policy"] == student["gender"]) | (self.dorms_df["gender_policy"] == "mixed"))
         ]
         
         if len(filtered) == 0:
@@ -92,7 +96,7 @@ class DormRecommender:
         features = filtered[[
             "price_scaled", "distance_scaled", "room_type_enc",
             "has_wifi", "has_kitchen", "has_laundry",
-            "has_ac", "is_pet_friendly"
+            "has_ac", "has_gym", "is_pet_friendly"
         ]].astype(float)
         
         student_vector = np.array([[
@@ -103,6 +107,7 @@ class DormRecommender:
             int(student["needs_kitchen"]),
             int(student["needs_laundry"]),
             int(student["needs_ac"]),
+            int(student["needs_gym"]),
             int(student["needs_pet_friendly"])
         ]], dtype=float)
         
@@ -165,9 +170,10 @@ class DormRecommender:
         try:
             student = self.students_df[self.students_df["student_id"] == student_id].iloc[0]
             filtered = self.dorms_df[
+                (self.dorms_df["price_egp"] >= student["budget_min_egp"]) &
                 (self.dorms_df["price_egp"] <= student["budget_max_egp"]) &
                 (self.dorms_df["distance_km"] <= student["preferred_distance_km"]) &
-                (self.dorms_df["gender_preference"] == student["gender"])
+                ((self.dorms_df["gender_policy"] == student["gender"]) | (self.dorms_df["gender_policy"] == "mixed"))
             ]
         except IndexError:
             filtered = pd.DataFrame()

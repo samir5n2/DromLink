@@ -73,6 +73,20 @@ const Listings = () => {
         if (dorm.room_type && dorm.room_type.toLowerCase() === "shared") type = "room";
         if (dorm.room_type && dorm.room_type.toLowerCase() === "single") type = "bed";
 
+        // Image logic
+        const imagePath = dorm.images?.[0]?.image;
+        let imageUrl = getFallbackImage(index);
+        
+        if (imagePath) {
+          if (imagePath.startsWith('http')) {
+            imageUrl = imagePath;
+          } else {
+            const normalizedPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+            const mediaPrefix = normalizedPath.startsWith('/media/') ? '' : '/media';
+            imageUrl = `${MEDIA_BASE_URL}${mediaPrefix}${normalizedPath}`;
+          }
+        }
+
         return {
           id: dorm.dorm_id,
           title: dorm.name,
@@ -91,9 +105,7 @@ const Listings = () => {
           rating: dorm.average_rating || 0.0,
           distance_km: dorm.distance_km,
           has_approved_booking: dorm.has_approved_booking,
-          image: dorm.images?.[0]?.image 
-            ? (dorm.images[0].image.startsWith('http') ? dorm.images[0].image : `${MEDIA_BASE_URL}${dorm.images[0].image}`)
-            : getFallbackImage(index)
+          image: imageUrl
         };
       });
     }
