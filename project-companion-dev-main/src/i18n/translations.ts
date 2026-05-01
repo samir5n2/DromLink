@@ -285,6 +285,7 @@ export const translations = {
         smartTv: "Smart TV",
         petFriendly: "Pet Friendly",
         scenicView: "Scenic View",
+        gym: "Gym / Fitness Center",
       },
       messages: {
         title: "Messages",
@@ -659,6 +660,7 @@ export const translations = {
         smartTv: "تلفزيون ذكي",
         petFriendly: "صديق للحيوانات",
         scenicView: "إطلالة خلابة",
+        gym: "صالة ألعاب رياضية (جيم)",
         distanceToUniversity: "المسافة للجامعة",
       },
       messages: {

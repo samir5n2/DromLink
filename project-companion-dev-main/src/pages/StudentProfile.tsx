@@ -263,7 +263,16 @@ const StudentProfile = () => {
                   <div className="grid gap-6 py-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label>{i18n.language === 'ar' ? "الميزانية القصوى" : "Max Budget"}</Label>
+                        <Label>{i18n.language === 'ar' ? "الميزانية (من)" : "Min Budget"}</Label>
+                        <Input 
+                          type="number" 
+                          step="100"
+                          value={editFormData.budget_min_egp || "0"} 
+                          onChange={(e) => setEditFormData({...editFormData, budget_min_egp: parseInt(e.target.value)})}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>{i18n.language === 'ar' ? "الميزانية (إلى)" : "Max Budget"}</Label>
                         <Input 
                           type="number" 
                           step="100"
@@ -271,15 +280,15 @@ const StudentProfile = () => {
                           onChange={(e) => setEditFormData({...editFormData, budget_max_egp: parseInt(e.target.value)})}
                         />
                       </div>
-                      <div className="space-y-2">
-                        <Label>{i18n.language === 'ar' ? "أقصى مسافة (كم)" : "Max Distance (KM)"}</Label>
-                        <Input 
-                          type="number" 
-                          step="0.5"
-                          value={editFormData.preferred_distance_km || ""} 
-                          onChange={(e) => setEditFormData({...editFormData, preferred_distance_km: parseFloat(e.target.value)})}
-                        />
-                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>{i18n.language === 'ar' ? "أقصى مسافة (كم)" : "Max Distance (KM)"}</Label>
+                      <Input 
+                        type="number" 
+                        step="0.5"
+                        value={editFormData.preferred_distance_km || ""} 
+                        onChange={(e) => setEditFormData({...editFormData, preferred_distance_km: parseFloat(e.target.value)})}
+                      />
                     </div>
 
                     <div className="space-y-3">
@@ -290,6 +299,7 @@ const StudentProfile = () => {
                           { key: 'needs_kitchen', label: t('property.kitchen') },
                           { key: 'needs_laundry', label: t('property.laundry') },
                           { key: 'needs_ac', label: t('property.ac') },
+                          { key: 'needs_gym', label: i18n.language === 'ar' ? "جيم / صالة ألعاب" : "Gym" },
                           { key: 'needs_parking', label: t('property.parking') },
                           { key: 'needs_furnished', label: t('property.furnished') },
                           { key: 'needs_smart_tv', label: t('property.smartTv') },
@@ -333,8 +343,8 @@ const StudentProfile = () => {
             </div>
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="rounded-xl border bg-card p-4 flex flex-col justify-center">
-                <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wider">{i18n.language === 'ar' ? "الميزانية القصوى" : "Max Budget"}</p>
-                <p className="font-bold text-lg text-primary">{profile.budget_max_egp || 1000} {i18n.language === 'ar' ? "ج.م" : "EGP"}</p>
+                <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wider">{i18n.language === 'ar' ? "نطاق الميزانية" : "Budget Range"}</p>
+                <p className="font-bold text-lg text-primary">{profile.budget_min_egp || 0} - {profile.budget_max_egp || 1000} {i18n.language === 'ar' ? "ج.م" : "EGP"}</p>
               </div>
               <div className="rounded-xl border bg-card p-4 flex flex-col justify-center">
                 <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wider">{i18n.language === 'ar' ? "أقصى مسافة" : "Max Distance"}</p>
@@ -350,6 +360,7 @@ const StudentProfile = () => {
                   { key: 'needs_kitchen', label: t('property.kitchen'), icon: Utensils },
                   { key: 'needs_laundry', label: t('property.laundry'), icon: Shirt },
                   { key: 'needs_ac', label: t('property.ac'), icon: AirVent },
+                  { key: 'needs_gym', label: i18n.language === 'ar' ? "جيم" : "Gym", icon: Users },
                   { key: 'needs_parking', label: t('property.parking'), icon: Car },
                   { key: 'needs_furnished', label: t('property.furnished'), icon: Armchair },
                   { key: 'needs_smart_tv', label: t('property.smartTv'), icon: Tv },

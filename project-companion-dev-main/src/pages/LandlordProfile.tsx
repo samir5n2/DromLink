@@ -25,6 +25,7 @@ const amenitiesList = [
   { id: "has_wifi", labelKey: "property.wifi", icon: Wifi },
   { id: "has_kitchen", labelKey: "property.kitchen", icon: UtensilsCrossed },
   { id: "has_ac", labelKey: "property.ac", icon: Monitor },
+  { id: "has_gym", labelKey: "property.gym", icon: Users },
   { id: "has_laundry", labelKey: "property.laundry", icon: Sofa },
   { id: "has_parking", labelKey: "property.parking", icon: Car },
   { id: "is_furnished", labelKey: "property.furnished", icon: Armchair },
@@ -64,6 +65,7 @@ const LandlordProfile = ({ defaultTab }: { defaultTab?: string }) => {
     has_wifi: false,
     has_kitchen: false,
     has_ac: false,
+    has_gym: false,
     has_laundry: false,
     has_parking: false,
     is_furnished: false,
@@ -282,6 +284,7 @@ const LandlordProfile = ({ defaultTab }: { defaultTab?: string }) => {
       has_wifi: prop.has_wifi,
       has_kitchen: prop.has_kitchen,
       has_ac: prop.has_ac,
+      has_gym: prop.has_gym,
       has_laundry: prop.has_laundry,
       has_parking: prop.has_parking,
       is_furnished: prop.is_furnished,
@@ -302,7 +305,7 @@ const LandlordProfile = ({ defaultTab }: { defaultTab?: string }) => {
     setFormData({
       name: '', address: '', location: '', price_egp: '', room_type: 'apartment',
       bedrooms: '1', bathrooms: '1', capacity: '1', distance_km: '1',
-      has_wifi: false, has_kitchen: false, has_ac: false, has_laundry: false,
+      has_wifi: false, has_kitchen: false, has_ac: false, has_gym: false, has_laundry: false,
       has_parking: false, is_furnished: false, has_smart_tv: false, is_pet_friendly: false, has_scenic_view: false,
       description: '', current_occupants: '0', google_maps_link: '', gender_preference: 'male',
     });
@@ -576,6 +579,7 @@ const LandlordProfile = ({ defaultTab }: { defaultTab?: string }) => {
                 <SelectContent>
                   <SelectItem value="male">{isAr ? "للذكور فقط" : "Males Only"}</SelectItem>
                   <SelectItem value="female">{isAr ? "للإناث فقط" : "Females Only"}</SelectItem>
+                  <SelectItem value="mixed">{isAr ? "مختلط" : "Mixed"}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
