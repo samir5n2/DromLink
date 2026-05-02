@@ -36,6 +36,9 @@ class RegisterView(APIView):
             id_card_image = request.FILES.get('id_card_image')
             gender = request.data.get('gender', 'male')
 
+            if not id_card_image:
+                return Response({"id_card_image": ["صورة البطاقة إجبارية / ID Card image is mandatory"]}, status=status.HTTP_400_BAD_REQUEST)
+
             user = None
             if user_type == 'student':
                 student = Student.objects.create(username=username, password=password, name=name, email=email, phone_number=phone, gender=gender, preferred_room_type="Any", id_card_image=id_card_image)

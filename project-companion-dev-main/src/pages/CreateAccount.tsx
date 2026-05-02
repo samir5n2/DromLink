@@ -19,7 +19,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
 const CreateAccount = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { login } = useAuth();
   const navigate = useNavigate();
   const [regType, setRegType] = useState<"student" | "landlord">("student");
@@ -43,6 +43,15 @@ const CreateAccount = () => {
     e.preventDefault();
     if (password !== confirmPassword) {
       toast({ title: "Error", description: "Passwords do not match", variant: "destructive" });
+      return;
+    }
+
+    if (!idFile) {
+      toast({ 
+        title: i18n.language === 'ar' ? "صورة البطاقة مطلوبة" : "ID Card Required", 
+        description: i18n.language === 'ar' ? "يرجى رفع صورة البطاقة الشخصية لإتمام التسجيل" : "Please upload your ID card image to complete registration", 
+        variant: "destructive" 
+      });
       return;
     }
     
@@ -187,10 +196,15 @@ const CreateAccount = () => {
 
           {/* National ID Upload */}
           <div className="space-y-2">
-            <Label className="font-semibold text-sm">{t("auth.nationalId")}</Label>
+            <Label className="font-semibold text-sm flex items-center gap-1">
+              {t("auth.nationalId")} <span className="text-destructive">*</span>
+            </Label>
             <div
               onClick={() => fileRef.current?.click()}
-              className="border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 transition-colors text-muted-foreground"
+              className={cn(
+                "border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition-colors",
+                idFile ? "border-primary/50 bg-primary/5" : "border-muted-foreground/30 hover:border-primary/50 text-muted-foreground"
+              )}
             >
               <Upload className="h-8 w-8 mb-2" />
               <span className="text-sm">
