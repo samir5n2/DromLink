@@ -12,7 +12,7 @@ from .serializers import StudentSerializer, DormSerializer, DormImageSerializer,
 from django.db.models import Avg
 from rest_framework_simplejwt.tokens import RefreshToken
 from .ai_recommender import recommender_instance as old_recommender
-from .dormlinkx222 import recommender_instance
+from .dormlinkx3 import recommender_instance
 import re
 
 def normalize_arabic(text):
